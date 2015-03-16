@@ -1,0 +1,9 @@
+{
+  "name": "spine",
+  "version": "0.0.0",
+  "description": "A (chiro)practical approach to backbone.js",
+  "scripts": {
+    "postinstall": "bower i"
+  },
+  "author": "Zach Pomerantz <zmp@umich.edu> (http://garabagne.io/)"
+}

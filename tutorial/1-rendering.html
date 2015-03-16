@@ -1,0 +1,176 @@
+<html>
+  <head>
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="../lib/underscore/underscore.js"></script>
+    <script src="../lib/backbone/backbone.js"></script>
+  </head>
+  <body>
+    <script>
+// Now it is your turn.  
+
+/* Here is what you start with:
+ * You have a function. When you call it with a message argument,
+ * it will 'render', or draw, that message onto the page using a template.
+ *
+ * The template part of the function is html that is the same for all messages.
+ * Let's break this function down:
+ */
+var renderSomethingOnThePage = function(message) {
+  /* We will use jQuery to append a message to the page,
+   * but we dont want all of this HTML to be in the `el.append` function call.
+   *
+   * Instead, we break it out first into a variable called `$element`.
+   * Now, we can call the `el.append` method with the `$element` variable.
+   *
+   * This also allows us to space out the html as we're used to,
+   * with indents to make it easier to read.
+   */
+  var html = [
+    '<div>',
+      '<span>',
+        message,
+      '</span>',
+    '</div>',
+    '<br/>'
+  ].join('');
+
+  /* Question:
+   * How would you modify this template to add style to the look of the page?
+   *
+   * _Look below for one possible solution._
+   */
+
+  /* Here is the jQuery call to append this html string to the page's body.
+   * Each time this function is called, the whole template defined above
+   * is 'rendered', or drawn, with the message you pass to
+   * the function argument.
+   */
+  $('body').append(html);
+};
+
+// Let's try it out:
+renderSomethingOnThePage(
+  'This is an example of how to use our rendering method.');
+
+/* Here are a few more examples. Every call to our rendering function (above)
+ * will draw something to the page using the template defined in that function:
+ */
+
+// renderSomethingOnThePage('Each additional message you give this function...');
+// renderSomethingOnThePage('...will draw a new message on the page!');
+
+/* Let's revisit what we have learned from the last exercise.
+ * We are working with a different application this time - we are going to be
+ * working with messages received from some API
+ * (like phone messages received from Twilio).
+ *
+ * Again, we extend a plain Backbone.Model to add extra stuff,
+ * specific to our model.  The plain Backbone.Model comes with all the methods
+ * that we will want to use later, so we just add the parts of the objects
+ * that we will want to interact with.  This one is a little different than
+ * the last time we extended the Backbone.Model: Last time, we didn't extend
+ * the plain Backbone.Model at all - we left it blank.
+ *
+ * This time, we will see what you might want to extend the model with.
+ *
+ * _Confused about what `extend` means or does? This is all about the prototype
+ * and inhertance. If you're stuck, halp yourself a teacher to explain._
+ */
+var Message = Backbone.Model.extend({  
+  /* Our messages should have two methods that someone could call.
+   * The first one, `initialize`, is specific to Backbone.
+   *
+   * When you were using ajax, if you defined a `success` function,
+   * you could depend on that function being called once the data comes back
+   * from the server. In Backbone, if you define a function and
+   * call it `initialize`, Backbone will call that function
+   * everytime you create a new model from the class that the
+   * initialize function is defined on.
+   *
+   * In this case, anytime you use `new Message`, the object/model created
+   * will have this `initialize` function run when the model is created.
+   *
+   * Before you continue, you should look up `initialize` in
+   * [the documentation](http://backbonejs.org/#Model-constructor).
+   */
+  initialize: function(){
+    /* This code will be run when we instantiate a new message.
+     *
+     * Notice that we are calling `this.on()`.
+     * This call is basically the same as the previous exercise.
+     * Putting it into the initialize function let's us be sure that
+     * all models that are created will have event listeners on them.
+     */
+    this.on(YOUR CODE HERE);
+    /* It is your turn to write the event handler.
+     *
+     * Make an event listener that will listen for a `change` in this model's
+     * message attribute, then call the method we defined above
+     * (`renderSomethingOnThePage`) and pass the message attribute
+     * on the model as an argument.
+     *
+     * Try it yourself, then check out how the function was defined on the
+     * previous exercise.
+     */
+  },
+
+  /* This second method is specifically useful for this message.
+   * In the future we will need to be able to alert the message on our model
+   * and want to be able to call this function, so we define it on the model.
+   */
+  alertThisMessage: function() {
+    /* Note: You will frequently be storing attributes on your models,
+     * and the model needs to be aware of these changes,
+     * hence the use of getters/setters.
+     *
+     * If you're curious about these functions, read up on them in
+     * [the documentation](http://backbonejs.org/#Model-get).
+     */
+    alert(this.get('message'));
+  }
+});
+
+/* How would you call the second method?
+ *
+ * Try it yourself, then check out the answer at the bottom of this script.
+ */
+
+
+// Let's try it out: 'instantiate' an instance of the class defined above:
+var myNewMessage = new Message();
+
+// ...and then make a change on that model to see it render
+myNewMessage.set({message: 'someMessage'});
+
+
+/* Once the model is rendering on the `change` event, move on to step 3!
+ *
+ * So far we have created models by extending Backbone.Model,
+ * and we have gone over event listeners for models.
+ *
+ * We have also touched on some of the usefulness of understanding
+ * what prototypes are, how they work, and their relation to `.extend`.
+ *
+ * Finally, we have touched on creating a template for a given model
+ * (in this case a message).
+ * However, doing it as a method can take a long time, and get a bit messy.
+ *
+ * In the next section, we will look into how Backbone
+ * deals with these 'templates'.  The templating, as well as other
+ * useful methods, are wrapped up into Backbone.View.
+ */
+
+/* - ANSWERS ------------------------------------------------------------------
+ * To style your template, you could
+ * - Add classes to the div, and a CSS (stylesheet) file
+ *   - '<div class="message">'
+ *   - this is the preferred method
+ * - Add inline styles
+ *   - Inline styles are generally not best practice - prefer stylesheets
+ *
+ *
+ * To call `alertThisMessage` on the object: `myNewMessage.alertThisMessage();`
+ */
+    </script>
+  </body>
+</html>

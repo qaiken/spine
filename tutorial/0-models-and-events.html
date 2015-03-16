@@ -1,0 +1,104 @@
+<html>
+  <head>
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="../lib/underscore/underscore.js"></script>
+    <script src="../lib/backbone/backbone.js"></script>
+  </head>
+  <body>
+  <script>
+/* - MVC ----------------------------------------------------------------------
+ * MVC (Model-View-Controller) frameworks divide your application into
+ * manageable components to make it easier to organize and comprehend.
+ *
+ * Backbone is a hierarchical MVC - Models are organized into Collections
+ * in order to track your data.
+ *
+ * In general:
+ * - _Models_ keep track of your data
+ * - _Views_ render your models to expose the data to your users
+ *
+ * For now, we'll focus on one piece at a time, starting with the _Model_.
+ * As we go through, refer to the [documentation](http://backbonejs.org/)
+ * with questions, and don't be afraid to use the halp desk.
+ */
+
+/* - Backbone MODEL -----------------------------------------------------------
+* Backbone gives us a model class, which we will extend to contain
+* properties/methods specific to our application model.
+*
+* For example, this is where we store information about how each model renders
+* into HTML. It's also where any functionality specific to a model is stored.
+*
+* Remember: a model is just an object. 'Model' is a technical term in Backbone
+* (and other similar frameworks) used to talk about the objects used to
+* store application data.
+*/
+var Tweet = Backbone.Model.extend({  
+  /* This is just a bare bones Backbone model. No extra special bits to add.
+   * Note that Backbone.Model is just another JavaScript class. We use extend
+   * to set it up as a normal class instantiator, with the normal
+   * pseudoclassical hierarchy - NOTE: extend (in backbone) is NOT the same 
+   * function you've seen in underscore! Backbone.Model.extend is going to 
+   * subclass Backbone.Model --basically make a constructor (function) whose 
+   * prototype has your provided properties.
+   */
+});
+
+/* Backbone models are pseudoclassically instantiated: */
+var myTweet = new Tweet();
+
+/* Backbone models are meant to store data, so it's important to understand
+ * their getters and setters: */
+myTweet.set('message', 'Hello, world!');
+
+/* Using the reference, get the message attribute of the model and display it:
+ * http://backbonejs.org/#Model-get */
+
+// window.alert(YOUR CODE HERE);
+
+/* - Backbone EVENTS ----------------------------------------------------------
+ * Backbone gives us the ability to listen for events on our models,
+ * similar to how we register events on the DOM using jQuery.
+ * If something in our model changes, we can listen for that change and react
+ * accordingly when the event happens.  When we want to register a listener,
+ * we use the method `model.on`.
+ *
+ * `model.on` takes two arguments:
+ * 1. The event name being triggered.
+ * 2. A function that does the thing you want to do when the event happens (i.e. the event handler, or callback function).
+ *
+ * Backbone gives you a couple of events for free, like `change`.
+ * This event is triggered automatically if something changes in the model:
+ * an attribute is added to the model, is deleted, or is changed.
+ *
+ * Before we listen for our first event, take a gander at the reference:
+ * http://backbonejs.org/#Events-on
+ */
+
+/* Listen for our model's `change` event: */
+myTweet.on('change',
+  function(/* this event holds information about the change: */ e) {
+    // Let ourselves know that something was changed:
+    console.info('Something in this tweet model was changed!');
+    console.log(e);
+
+    // Write code to log the changed attribute:
+    // console.log(YOUR CODE HERE);
+  }
+);
+
+/* Backbone works through getters/setters. If you change something on
+ * your model as if it were a plain old javascript object,
+ * Backbone will not know to fire the change event. */
+// myTweet.message = 'This will not work';
+
+/* Instead, we need to use the baked in getters/setters given to us
+ * by the framework. Review these now (at http://backbonejs.org/#Model-set)
+ * and write a one-liner that will make our `change` listener fire: */
+
+// myTweetYOUR CODE HERE;
+
+/* Once you have the `change` event firing, move on to rendering! */
+  </script>
+  </body>
+</html>

@@ -1,0 +1,140 @@
+<html>
+  <head>
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="../lib/underscore/underscore.js"></script>
+    <script src="../lib/backbone/backbone.js"></script>
+  </head>
+  <body>
+    <script>
+/* Before you start this section, you should at least skim through the
+ * documentation. Do not look through this section until you've completed
+ * the ones before it!
+ *
+ * If you feel lost, ask your peers; if you're still lost, call for halp!
+ *
+ * Remember, always, to __check [the documentation](http://backbonejs.org/)__!
+ */
+
+/* - Backbone COLLECTION ------------------------------------------------------
+ * Collections are a way of organizing your models.
+ * Backbone gives us some conveniences, such as propagating events,
+ * that makes them a breeze to use. I'll start you off both model and view: */
+var Comment = Backbone.Model.extend({
+  /* This is purposely different from the previous steps.
+   * Make sure to do those first (!!!) and then check here for new patterns. */
+
+  initialize: function(message, votes) {
+    this.set('message', message);
+    if (votes) { this.set('votes', votes); }
+  },
+  // Default to 0 votes
+  defaults: {
+    votes: 0
+  },
+  // Convenience function over `model.get/set`
+  votes: function(votes) {
+    if (arguments.length) {
+      this.set('votes', votes);
+      return votes;
+    } else {
+      return this.get('votes');
+    }
+  }
+});
+var CommentView = Backbone.View.extend({
+  initialize: function() {
+    this.model.on('change:votes', this.render, this);
+  },
+  render: function() {
+    var html = [
+      '<div>',
+        '<span class="votes">',
+          this.model.get('votes'),
+        '<span>',
+        '<span class="comment">',
+          this.model.get('message'),
+        '</span>',
+        '</br>',
+      '</div>'
+    ].join('');
+
+    return this.$el.html(html);
+    /* Rendering raw model attributes like this could expose us
+     * to XSS attacks. In a real application, make sure to use
+     * templating to protect against this, such as
+     * <%- escaped interpolation %> in underscore's _.template.
+     *
+     * For now, we won't worry about that. */
+  }
+});
+/* Now that we have a model, let's imagine what would happen were we to have
+ * many, many comments: we would put them in a collection: */
+var Comments = Backbone.Collection.extend({
+  /* Everything in our collection must be an instance of this model.
+   * Setting this gives us some convenience functions, but is not
+   * necessary; check out the documentation:
+   * http://backbonejs.org/#Collection-model */
+  model: Comment
+});
+
+/* The reason we want a collection is to track our models.
+ * Let's use this collection to:
+ * - display every comment in it
+ * - count the total number of votes, across all comments
+ *
+ * That means we need to write a new view: */
+var CommentsView = Backbone.View.extend({
+  /* Again, we use our initialize function to register listeners.
+   * In this case, we want to know when votecounts of the models
+   * in our collection changes. */
+  initialize: function() {
+    /* Backbone events bubble up through collections,
+     * so monitoring a model in a collection is easy! */
+    this.model.on('change:votes', this.render, this);
+  },
+
+  // Now we must render the collection:
+  render: function() {
+    var html = [
+      '<ul>',
+      '</ul>',
+      '<span class="votes">',
+        // The total number of votes
+        this.model.reduce(function(memo, comment) {
+          return memo + comment.get('votes');
+        }, 0),
+      '</span>'
+    ].join('');
+
+    this.$el.html(html);
+    /* Render each model in the collection as a list item (<li>).
+     * Remember, we have the underscore functions: */
+    this.$el.find('ul').append(this.model.map(function(comment) {
+      // YOUR CODE HERE
+    }));
+
+    return this.$el;
+  }
+});
+
+// That's it! Let's watch some stats:
+
+/* Create a few new comment models using our Comment class: */
+var commentList = [
+  new Comment('Doug!'), // default to 0 votes
+  new Comment('Doug?', 1),
+  new Comment('Doug.', 2),
+  new Comment('"Doug".', 3),
+  new Comment('Doug?!', 4)];
+
+// Add all of these to a new collection:
+var comments = new Comments(commentList);
+
+// Associate a view to the collection:
+var commentsView = new CommentsView({ model: comments });
+
+// Append it to the page (uncomment this when you are ready):
+// $('body').append(commentsView.render());
+    </script>
+  </body>
+</html>

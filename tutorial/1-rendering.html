@@ -6,7 +6,7 @@
   </head>
   <body>
     <script>
-// Now it is your turn.  
+// Now it is your turn.
 
 /* Here is what you start with:
  * You have a function. When you call it with a message argument,
@@ -56,8 +56,8 @@ renderSomethingOnThePage(
  * will draw something to the page using the template defined in that function:
  */
 
-// renderSomethingOnThePage('Each additional message you give this function...');
-// renderSomethingOnThePage('...will draw a new message on the page!');
+renderSomethingOnThePage('Each additional message you give this function...');
+renderSomethingOnThePage('...will draw a new message on the page!');
 
 /* Let's revisit what we have learned from the last exercise.
  * We are working with a different application this time - we are going to be
@@ -76,7 +76,7 @@ renderSomethingOnThePage(
  * _Confused about what `extend` means or does? This is all about the prototype
  * and inhertance. If you're stuck, halp yourself a teacher to explain._
  */
-var Message = Backbone.Model.extend({  
+var Message = Backbone.Model.extend({
   /* Our messages should have two methods that someone could call.
    * The first one, `initialize`, is specific to Backbone.
    *
@@ -93,6 +93,7 @@ var Message = Backbone.Model.extend({
    * Before you continue, you should look up `initialize` in
    * [the documentation](http://backbonejs.org/#Model-constructor).
    */
+
   initialize: function(){
     /* This code will be run when we instantiate a new message.
      *
@@ -101,7 +102,9 @@ var Message = Backbone.Model.extend({
      * Putting it into the initialize function let's us be sure that
      * all models that are created will have event listeners on them.
      */
-    this.on(YOUR CODE HERE);
+    this.on('change:message', function(e) {
+      renderSomethingOnThePage(e.changed.message);
+    });
     /* It is your turn to write the event handler.
      *
      * Make an event listener that will listen for a `change` in this model's
